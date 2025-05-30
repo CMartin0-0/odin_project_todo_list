@@ -1,0 +1,8 @@
+.project-container {
+  display: grid;
+  grid-template-columns: 
+}
+
+.hidden {
+  display:none;
+}
