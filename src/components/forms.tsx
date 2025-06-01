@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export default function Forms(props) {
 
-    const [newProject, setNewProject] = useState({id: `${crypto.randomUUID()}`, name: '', description: '', todos: [{}] });
+    const [newProject, setNewProject] = useState({id: `${crypto.randomUUID()}`, name: '', description: '', todos: [] });
     const [newTodo, setNewTodo] = useState({todoId: `${crypto.randomUUID()}`, todoName: '', todoDescription: '', todoDueDate: '', todoNotes: ''})
 
     function handleProjectSubmit(e) {
@@ -14,7 +14,7 @@ export default function Forms(props) {
         }
         // send info to create a new project, reset the new project data, and re-hide the new project form
         props.addToProjects(newProject)
-        setNewProject({id: `${crypto.randomUUID()}`, name: '', description: '', todos: [{}]})
+        setNewProject({id: `${crypto.randomUUID()}`, name: '', description: '', todos: []})
         props.setProjectFormHidden(true);
         } 
         
