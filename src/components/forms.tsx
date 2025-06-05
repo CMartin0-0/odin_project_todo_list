@@ -25,10 +25,18 @@ export default function Forms(props) {
             alert('Please enter all needed data for the new todo')
             return
             }
+
+        if (props.todoId) {
+            props.editTodo(newTodo)
+            setNewTodo({todoId: `${crypto.randomUUID()}`, todoName: '', todoDescription: '', todoDueDate: '', todoNotes: ''})
+            props.setTodoFormHidden(true);
+            props.setTodoId('');
+        } else {
         // same as above but for new todo
         props.addTodoToProject(newTodo)
         setNewTodo({todoId: `${crypto.randomUUID()}`, todoName: '', todoDescription: '', todoDueDate: '', todoNotes: ''})
         props.setTodoFormHidden(true);
+        }
         }
 
     
@@ -95,6 +103,7 @@ export default function Forms(props) {
 					className='input'
 					value={newProject.name}
 					onChange={handleChange}
+                    required
 				/>
 				<input
 					type='text'
@@ -122,6 +131,7 @@ export default function Forms(props) {
 					className='input'
 					value={newTodo.todoName}
 					onChange={handleChange}
+                    required
 				/>
 				<input
 					type='text'
@@ -131,7 +141,7 @@ export default function Forms(props) {
 					onChange={handleChange}
 				/>
 				<input
-					type='text'
+					type='date'
 					id='new-todo-due-date'
 					className='input'
 					value={newTodo.todoDueDate}

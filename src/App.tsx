@@ -14,7 +14,7 @@ function App(props) {
 	const [projectFormHidden, setProjectFormHidden] = useState(true);
 	const [todoFormHidden, setTodoFormHidden] = useState(true);
 	const [activeProjectState, setActiveProjectState] = useState([]);
-
+    
 	function addToProjects(newProject) {
 		const newProjectData = newProject;
 		console.log(newProjectData);
@@ -45,19 +45,43 @@ function App(props) {
 	}
 
 	function deleteTodoFromProject(todoToDeleteId) {
+        let todoIndex;
 		for (let j = 0; j < projectsList.length; j++) {
 			for (let i = 0; i < projectsList[j].todos.length; i++) {
-				setProjectsList(
+				
+                
+                setProjectsList(
 					produce(projectsList, (draft) => {
-						const todoIndex = draft[j].todos.findIndex(
+						todoIndex = draft[j].todos.findIndex(
 							(todo) => todo.todoId === todoToDeleteId
 						);
 						draft[j].todos.splice(todoIndex, 1);
 					})
-				);
+				)
+               
 			}
-		}
+		} 
+        if (!todoIndex) {
+                    setActiveProjectState(produce(activeProjectState, (draft) => {
+                        todoIndex = draft[0].todos.findIndex(
+                            (todo) => todo.todoId === todoToDeleteId);
+                        draft[0].todos.splice(todoIndex, 1);
+                    }))
+                };
 	}
+
+    function editTodo(todoData) {
+        const updatedTodoData = todoData;
+        setActiveProjectState(
+            produce(activeProjectState, (draft) => {
+                const todoIndex = draft[0].todos.findIndex(
+                    (todo) => todo.todoId === todoId);
+                    draft[0].todos.splice(todoIndex, 1, updatedTodoData);
+            })
+        )
+        setTodoId('');
+        setTodoFormHidden(true);
+    }
 
 	function handleProjectFormHidden(e) {
 		e.preventDefault();
@@ -139,6 +163,7 @@ function App(props) {
 								key={todo.todoId}
 								setTodoId={setTodoId}
 								todoId={todoId}
+                                setTodoFormHidden={setTodoFormHidden}
 								children={
 									<Buttons
 										deleteTodo={deleteTodoFromProject}
@@ -164,6 +189,8 @@ function App(props) {
 			setProjectId={setProjectId}
 			projectId={projectId}
 			handleToggleActiveProject={handleToggleActiveProject}
+            todoId={todoId}
+            setTodoId={setTodoId}
             isActive={true}
 		>
 			{
@@ -178,11 +205,12 @@ function App(props) {
 								dueDate={todo.todoDueDate}
 								notes={todo.todoNotes}
 								key={todo.todoId}
-								setTodoId={setTodoId}
-								todoId={todoId}
 								children={
 									<Buttons
 										deleteTodo={deleteTodoFromProject}
+                                        setTodoFormHidden={setTodoFormHidden}
+                                        setTodoId={setTodoId}
+                                        todoId={todoId}
 									/>
 								}
 							/>
@@ -197,6 +225,7 @@ function App(props) {
 
 	return (
 		<>
+            <p className="projects-label">Projects</p>
 			<div className='projects-container'>{projects}</div>
 			<button
 				id='show-project-form-btn'
@@ -213,6 +242,9 @@ function App(props) {
 				projectFormHidden={projectFormHidden}
 				setProjectFormHidden={setProjectFormHidden}
 				setProjectId={setProjectId}
+                setTodoId={setTodoId}
+                todoId={todoId}
+                editTodo={editTodo}
 			/>
 		</>
 	);

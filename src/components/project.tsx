@@ -18,17 +18,19 @@ export default function Project(props) {
   
     return (
         <>
+        
 		<div id={props.id} className={`${props.isActive ? 'project active-project' : 'project p-hidden'}`} >
-			<p className='project-name'>{props.name}</p>
+			<div className="project-pin"></div>
+            <p className='project-name'>{props.name}</p>
 			<p className='project-description'>{props.description}</p>
 			
 				<button type="button" className="btn add-todo-to-project" onClick={handleAddTodo}>
-                    Add New Todo
+                 New Todo
                 </button>
 				<button type='button' className='btn delete-project'>
 					Delete Project
 				</button>
-                <button type='button' className='btn show-hide-btn' onClick={handleToggle}>{`${props.isActive ? 'Hide' : 'Show'}`}</button>
+                <button type='button' className='btn show-hide-btn' onClick={handleToggle}>{`${props.isActive ? 'Hide Project' : 'Show Project'}`}</button>
             {props.children}
 		</div>
         </>
