@@ -1,95 +1,150 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 
-export default function Forms(props) {
+export default function Forms(props: {
+	addToProjects: (arg0: {
+		id: string;
+		name: string;
+		description: string;
+		todos: never[];
+	}) => void;
+	setProjectFormHidden: (arg0: boolean) => void;
+	todoId: any;
+	editTodo: (arg0: {
+		todoId: string;
+		todoName: string;
+		todoDescription: string;
+		todoDueDate: string;
+		todoNotes: string;
+	}) => void;
+	setTodoFormHidden: (arg0: boolean) => void;
+	setTodoId: (arg0: string) => void;
+	addTodoToProject: (arg0: {
+		todoId: string;
+		todoName: string;
+		todoDescription: string;
+		todoDueDate: string;
+		todoNotes: string;
+	}) => void;
+	projectFormHidden: any;
+	todoFormHidden: any;
+}) {
+	const [newProject, setNewProject] = useState({
+		id: `${crypto.randomUUID()}`,
+		name: '',
+		description: '',
+		todos: [],
+	});
+	const [newTodo, setNewTodo] = useState({
+		todoId: `${crypto.randomUUID()}`,
+		todoName: '',
+		todoDescription: '',
+		todoDueDate: '',
+		todoNotes: '',
+	});
 
-    const [newProject, setNewProject] = useState({id: `${crypto.randomUUID()}`, name: '', description: '', todos: [] });
-    const [newTodo, setNewTodo] = useState({todoId: `${crypto.randomUUID()}`, todoName: '', todoDescription: '', todoDueDate: '', todoNotes: ''})
+	function handleProjectSubmit(e: { preventDefault: () => void }) {
+		e.preventDefault();
 
-    function handleProjectSubmit(e) {
-       e.preventDefault();
+		if (newProject.name === '') {
+			alert('Please enter all needed information for the new project');
+			return;
+		}
+		// send info to create a new project, reset the new project data, and re-hide the new project form
+		props.addToProjects(newProject);
+		setNewProject({
+			id: `${crypto.randomUUID()}`,
+			name: '',
+			description: '',
+			todos: [],
+		});
+		props.setProjectFormHidden(true);
+	}
 
-        if (newProject.name === '') {
-            alert('Please enter all needed information for the new project');
-            return;
-        }
-        // send info to create a new project, reset the new project data, and re-hide the new project form
-        props.addToProjects(newProject)
-        setNewProject({id: `${crypto.randomUUID()}`, name: '', description: '', todos: []})
-        props.setProjectFormHidden(true);
-        } 
-        
-      function handleTodoSubmit(e) {
-        e.preventDefault();
+	function handleTodoSubmit(e: { preventDefault: () => void }) {
+		e.preventDefault();
 
-        if (newTodo.todoName === '') {
-            alert('Please enter all needed data for the new todo')
-            return
-            }
+		if (newTodo.todoName === '' && !props.todoId) {
+			alert('Please enter all needed data for the new todo');
+			return;
+		}
 
-        if (props.todoId) {
-            props.editTodo(newTodo)
-            setNewTodo({todoId: `${crypto.randomUUID()}`, todoName: '', todoDescription: '', todoDueDate: '', todoNotes: ''})
-            props.setTodoFormHidden(true);
-            props.setTodoId('');
-        } else {
-        // same as above but for new todo
-        props.addTodoToProject(newTodo)
-        setNewTodo({todoId: `${crypto.randomUUID()}`, todoName: '', todoDescription: '', todoDueDate: '', todoNotes: ''})
-        props.setTodoFormHidden(true);
-        }
-        }
-
-    
-
-    function handleChange(e) {
-
-        // handle updating both new project and new todo data
-
-        const eventTargetId = e.target.id;
-        if (eventTargetId === 'new-todo-name') {
-		setNewTodo({...newTodo, todoName: e.target.value});
-	} else if (eventTargetId === 'new-todo-description') {
-        setNewTodo({...newTodo, todoDescription: e.target.value})
-    } else if (eventTargetId === 'new-todo-due-date') {
-        setNewTodo({...newTodo, todoDueDate: e.target.value})
-    } else if (eventTargetId === 'new-todo-notes') {
-        setNewTodo({...newTodo, todoNotes: e.target.value})
-    } else if (eventTargetId === 'new-project-name') {
-        setNewProject({...newProject, name: e.target.value}) 
-        console.log(newProject);
-    } else if (eventTargetId === 'new-project-description') {
-        setNewProject({...newProject, description: e.target.value})
-    } else {
-        alert('Something went wrong, everything is on fire')
-        return
-    }
-    }
-
-    function handleCancel(e) {
-        e.preventDefault();
-        const eventTarget = e.target.closest('form').id;
-
-        if (eventTarget === 'add-project-form') {
-            setNewProject({
-				id: `${crypto.randomUUID()}`,
-				name: '',
-				description: '',
-				todos: [{}],
-			});
-             props.setProjectFormHidden(true);
-        } else if (eventTarget === 'add-todo-form') {
-            setNewTodo({
+		if (props.todoId) {
+			props.editTodo(newTodo);
+			setNewTodo({
 				todoId: `${crypto.randomUUID()}`,
 				todoName: '',
 				todoDescription: '',
 				todoDueDate: '',
 				todoNotes: '',
 			});
-            props.setTodoFormHidden(true);
-        }
-    }
+			props.setTodoFormHidden(true);
+			props.setTodoId('');
+		} else {
+			// same as above but for new todo
+			props.addTodoToProject(newTodo);
+			setNewTodo({
+				todoId: `${crypto.randomUUID()}`,
+				todoName: '',
+				todoDescription: '',
+				todoDueDate: '',
+				todoNotes: '',
+			});
+			props.setTodoFormHidden(true);
+		}
+	}
 
-    return (
+	function handleChange(e: { target: { id: any; value: any } }) {
+		// handle updating both new project and new todo data
+
+		const eventTargetId = e.target.id;
+
+		if (eventTargetId === 'new-todo-name') {
+			setNewTodo({ ...newTodo, todoName: e.target.value });
+		} else if (eventTargetId === 'new-todo-description') {
+			setNewTodo({ ...newTodo, todoDescription: e.target.value });
+		} else if (eventTargetId === 'new-todo-due-date') {
+			setNewTodo({ ...newTodo, todoDueDate: e.target.value });
+		} else if (eventTargetId === 'new-todo-notes') {
+			setNewTodo({ ...newTodo, todoNotes: e.target.value });
+		} else if (eventTargetId === 'new-project-name') {
+			setNewProject({ ...newProject, name: e.target.value });
+			console.log(newProject);
+		} else if (eventTargetId === 'new-project-description') {
+			setNewProject({ ...newProject, description: e.target.value });
+		} else {
+			alert('Something went wrong, everything is on fire');
+			return;
+		}
+	}
+
+	function handleCancel(e: React.MouseEvent<HTMLButtonElement>) {
+		e.preventDefault();
+		const formElement = (e.target as HTMLElement).closest('form');
+		const eventTarget = formElement ? formElement.id : '';
+
+		if (eventTarget === 'add-project-form') {
+			setNewProject({
+				id: `${crypto.randomUUID()}`,
+				name: '',
+				description: '',
+				todos: [],
+			});
+			props.setProjectFormHidden(true);
+		} else if (eventTarget === 'add-todo-form') {
+			setNewTodo({
+				todoId: `${crypto.randomUUID()}`,
+				todoName: '',
+				todoDescription: '',
+				todoDueDate: '',
+				todoNotes: '',
+			});
+			props.setTodoId('');
+			props.setTodoFormHidden(true);
+		}
+	}
+
+	return (
 		<>
 			<form
 				id='add-project-form'
@@ -103,7 +158,7 @@ export default function Forms(props) {
 					className='input'
 					value={newProject.name}
 					onChange={handleChange}
-                    required
+					required
 				/>
 				<input
 					type='text'
@@ -115,7 +170,12 @@ export default function Forms(props) {
 				<button type='submit' id='add-project' className='button'>
 					Add Project
 				</button>
-				<button type='button' id='cancel-project-form' className='button' onClick={handleCancel}>
+				<button
+					type='button'
+					id='cancel-project-form'
+					className='button'
+					onClick={handleCancel}
+				>
 					Cancel
 				</button>
 			</form>
@@ -124,15 +184,23 @@ export default function Forms(props) {
 				onSubmit={handleTodoSubmit}
 				className={props.todoFormHidden ? 'hidden' : ''}
 			>
-				<label htmlFor='new-todo-name'>Todo Name</label>
+				<label htmlFor='new-todo-name' className='todo-form-name-label'>
+					Todo Name
+				</label>
 				<input
 					type='text'
 					id='new-todo-name'
 					className='input'
 					value={newTodo.todoName}
 					onChange={handleChange}
-                    required
+					required
 				/>
+				<label
+					htmlFor='new-todo-description'
+					className='todo-form-description-label'
+				>
+					Todo Description
+				</label>
 				<input
 					type='text'
 					id='new-todo-description'
@@ -140,6 +208,12 @@ export default function Forms(props) {
 					value={newTodo.todoDescription}
 					onChange={handleChange}
 				/>
+				<label
+					htmlFor='new-todo-due-date'
+					className='todo-form-due-date-label'
+				>
+					Todo Due Date
+				</label>
 				<input
 					type='date'
 					id='new-todo-due-date'
@@ -147,6 +221,12 @@ export default function Forms(props) {
 					value={newTodo.todoDueDate}
 					onChange={handleChange}
 				/>
+				<label
+					htmlFor='new-todo-notes'
+					className='todo-form-notes-label'
+				>
+					Todo Notes
+				</label>
 				<input
 					type='text'
 					id='new-todo-notes'
@@ -155,12 +235,21 @@ export default function Forms(props) {
 					onChange={handleChange}
 				/>
 				<button type='submit' id='add-todo' className='button'>
-					Add Todo
+					{!props.todoId ? 'Add Todo' : 'Update Todo'}
 				</button>
-				<button type='button' id='cancel-todo-form' className='button' onClick={handleCancel}>
+				<button
+					type='button'
+					id='cancel-todo-form'
+					className='button'
+					onClick={handleCancel}
+				>
 					Cancel
 				</button>
 			</form>
+			<div className={props.todoFormHidden ? 'hidden' : 'overlay'}></div>
+			<div
+				className={props.projectFormHidden ? 'hidden' : 'overlay'}
+			></div>
 		</>
 	);
 }
