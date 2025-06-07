@@ -21,7 +21,7 @@ export default function Todo(props: {
 		<>
 			<div id={props.id} className='todo'>
 				<div className='todo-pin'></div>
-				<p className='todo-name-label'>What Todo?</p>
+				<p className='todo-name-label'>What Todo</p>
 				<p className='name-label'>Todo</p>
 				<p className='todo-name'>{props.name}</p>
 				<p className='description-label'>What??</p>

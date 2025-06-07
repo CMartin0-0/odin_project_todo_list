@@ -305,7 +305,8 @@ function App(props: Props) {
 
 	return (
 		<>
-			<p className='projects-label'>Projects</p>
+			<p className='projects-label'>Todo: Create Todos</p>
+            <p className='description'>Create projects and add todos to them, that way you can group todos how ever you like and have completely seperate todo lists!</p>
 			<div className='projects-container'>{projects}</div>
 			<button
 				id='show-project-form-btn'

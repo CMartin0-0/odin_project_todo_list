@@ -151,7 +151,8 @@ export default function Forms(props: {
 				onSubmit={handleProjectSubmit}
 				className={props.projectFormHidden ? 'hidden' : ' '}
 			>
-				<label htmlFor='new-project-name'>Project Name</label>
+                <p className='new-project-label'>New Project?</p>
+				<label htmlFor='new-project-name' className='new-project-name-label'>Project Name:</label>
 				<input
 					type='text'
 					id='new-project-name'
@@ -160,20 +161,20 @@ export default function Forms(props: {
 					onChange={handleChange}
 					required
 				/>
-				<input
-					type='text'
+				<label htmlFor='new-project-description' className='new-project-description-label'>Project Description:</label>
+				<textarea
 					id='new-project-description'
 					className='input'
 					value={newProject.description}
 					onChange={handleChange}
 				/>
-				<button type='submit' id='add-project' className='button'>
+				<button type='submit' id='add-project' className='btn new-project-btn'>
 					Add Project
 				</button>
 				<button
 					type='button'
 					id='cancel-project-form'
-					className='button'
+					className='btn cancel-new-project-btn'
 					onClick={handleCancel}
 				>
 					Cancel
@@ -184,8 +185,9 @@ export default function Forms(props: {
 				onSubmit={handleTodoSubmit}
 				className={props.todoFormHidden ? 'hidden' : ''}
 			>
+                <p className='todo-form-label'>What Todo?</p>
 				<label htmlFor='new-todo-name' className='todo-form-name-label'>
-					Todo Name
+					Todo Name:
 				</label>
 				<input
 					type='text'
@@ -199,10 +201,9 @@ export default function Forms(props: {
 					htmlFor='new-todo-description'
 					className='todo-form-description-label'
 				>
-					Todo Description
+					Todo Description:
 				</label>
-				<input
-					type='text'
+				<textarea
 					id='new-todo-description'
 					className='input'
 					value={newTodo.todoDescription}
@@ -212,7 +213,7 @@ export default function Forms(props: {
 					htmlFor='new-todo-due-date'
 					className='todo-form-due-date-label'
 				>
-					Todo Due Date
+					Todo Due-Date:
 				</label>
 				<input
 					type='date'
@@ -225,22 +226,21 @@ export default function Forms(props: {
 					htmlFor='new-todo-notes'
 					className='todo-form-notes-label'
 				>
-					Todo Notes
+					Todo Notes:
 				</label>
-				<input
-					type='text'
+				<textarea
 					id='new-todo-notes'
 					className='input'
 					value={newTodo.todoNotes}
 					onChange={handleChange}
 				/>
-				<button type='submit' id='add-todo' className='button'>
+				<button type='submit' id='add-todo' className='btn add-todo-btn'>
 					{!props.todoId ? 'Add Todo' : 'Update Todo'}
 				</button>
 				<button
 					type='button'
 					id='cancel-todo-form'
-					className='button'
+					className='btn cancel-todo-btn'
 					onClick={handleCancel}
 				>
 					Cancel
