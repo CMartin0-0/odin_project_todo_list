@@ -16,7 +16,7 @@ html {
 		format('truetype');
 }
 body {
-	background-image: url('.\\src\\assets\\cork_board.jpg');
+	background-image: url('.\\src\assets\\cork_board.jpg');
 	background-size: cover;
 	min-height: 100vh;
 	max-width: 100vw;
